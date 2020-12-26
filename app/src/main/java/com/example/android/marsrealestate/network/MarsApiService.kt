@@ -22,6 +22,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
 private const val BASE_URL = "https://mars.udacity.com/"
@@ -32,14 +33,14 @@ private val moshi = Moshi.Builder()
 
 private val retrofit = Retrofit.Builder()
 //        .addConverterFactory(ScalarsConverterFactory.create()) this converts json to string
-//        .addConverterFactory(MoshiConverterFactory.create(moshi)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .baseUrl(BASE_URL)
         .build()
 
 interface MarsApiService {
     @GET("realestate")
-    fun getProperties():
+    fun getPropertiesAsync():
 //            Call<String> this returns a json string
 //            Call<List<MarsProperty>>
             Deferred<List<MarsProperty>>
