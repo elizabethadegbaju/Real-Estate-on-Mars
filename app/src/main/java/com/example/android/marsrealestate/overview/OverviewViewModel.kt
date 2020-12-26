@@ -43,9 +43,9 @@ class OverviewViewModel : ViewModel() {
     val status: LiveData<String>
         get() = _status
 
-    private var _property = MutableLiveData<MarsProperty>()
-    val property: LiveData<MarsProperty>
-        get() = _property
+    private var _properties = MutableLiveData<List<MarsProperty>>()
+    val properties: LiveData<List<MarsProperty>>
+        get() = _properties
 
     /**
      * Call getMarsRealEstateProperties() on init so we can display status immediately.
@@ -65,7 +65,7 @@ class OverviewViewModel : ViewModel() {
                 _status.value = "Success: We retrieved ${listResult.size} Mars properties"
                 Log.d(TAG, "getMarsRealEstateProperties: ${status.value}")
                 if (listResult.isNotEmpty())
-                    _property.value = listResult[0]
+                    _properties.value = listResult
             } catch (e: Exception) {
                 _status.value = "Failure: ${e.message}"
                 Log.d(TAG, "getMarsRealEstateProperties: ${status.value}")
