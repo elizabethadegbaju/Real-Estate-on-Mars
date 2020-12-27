@@ -32,9 +32,10 @@ import kotlinx.coroutines.launch
  * The [ViewModel] that is attached to the [OverviewFragment].
  */
 
-enum class MarsApiStatus { LOADING, ERROR, COMPLETED }
-
 class OverviewViewModel : ViewModel() {
+
+    enum class MarsApiStatus { LOADING, ERROR, COMPLETED }
+
     private val TAG = OverviewViewModel::class.simpleName
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -49,6 +50,10 @@ class OverviewViewModel : ViewModel() {
     private var _properties = MutableLiveData<List<MarsProperty>>()
     val properties: LiveData<List<MarsProperty>>
         get() = _properties
+
+    private var _navigateToSelectedProperty = MutableLiveData<MarsProperty>()
+    val navigateToSelectedProperty: LiveData<MarsProperty>
+        get() = _navigateToSelectedProperty
 
     /**
      * Call getMarsRealEstateProperties() on init so we can display status immediately.
@@ -76,6 +81,14 @@ class OverviewViewModel : ViewModel() {
                 Log.d(TAG, "getMarsRealEstateProperties: ${status.value}")
             }
         }
+    }
+
+    fun displayPropertyDetails(marsProperty: MarsProperty) {
+        _navigateToSelectedProperty.value = marsProperty
+    }
+
+    fun displayPropertyDetailsDone() {
+        _navigateToSelectedProperty.value = null
     }
 
     override fun onCleared() {
